@@ -7,7 +7,7 @@ internal class Program
 
     private static void Main(string[] args)
     {
-        Dictionary<int, List<ContaBancaria>> contas = new();
+        Dictionary<int, ContaBancaria> contas = new();
         ExibirOpcoesDoMenu();
 
         void ExibirOpcoesDoMenu()
@@ -21,13 +21,18 @@ internal class Program
             Console.WriteLine("Digite 7 para Realizar um PIX");
             Console.WriteLine("Digite -1 para sair");
 
-
+            Console.Write("\nEntre com a opção: ");
             string opcao = Console.ReadLine()!;
 
             switch (opcao)
             {
                 case "1":
+                    Console.Clear();
                     RegistrarConta();
+                    break;
+                case "2":
+                    Console.Clear();
+                    VerificarDadosDaConta();
                     break;
                 default:
                     break;
@@ -65,17 +70,83 @@ internal class Program
             int numeroDaConta = contas.Count() + 1;
             ContaBancaria contaBancaria = new(numeroDaConta, titular);
 
-             
-            if (!contas.ContainsKey(numeroDaConta)) contas[numeroDaConta] = [contaBancaria];
-            contas[numeroDaConta].Add(contaBancaria);
 
-            Console.WriteLine($"Voce possui { contas.Count} conta cadastrada");
+            if (!contas.ContainsKey(numeroDaConta)) contas.Add(numeroDaConta, contaBancaria);
+
+            Console.WriteLine("Conta Corrente cadastrada com sucesso . . .");
+
+
+            bool valid = true;
+            do
+            {
+                Console.Write("\nVerificar os dados cadastrados ( 1-SIM / 2-SAIR ): ");
+                string opcao = Console.ReadLine()!;
+
+                switch (opcao)
+                {
+                    case "1":
+                        Console.Clear();
+                        VerificarDadosDaConta(numeroDaConta);
+                        valid = false;
+                        break;
+                    case "2":
+                        Console.Clear();
+                        ExibirOpcoesDoMenu();
+                        valid = false;
+                        break;
+                    default:
+                        Console.WriteLine("Opção inválida\nTente novamente . . .");
+                        valid = true;
+                        break;
+                }
+
+            } while (valid);
+
+            Console.Write("Digite qualquer tecla para sair . . .");
+            Console.ReadLine();
+            Console.Clear();
+            ExibirOpcoesDoMenu();
 
             //if (Data.DataEhValida("31/02/2005"))
             //    Console.WriteLine("Data válida");
 
             //else
             //    Console.WriteLine("Data inválida");
+        }
+
+
+        void VerificarDadosDaConta(int numeroConta = 0)
+        {
+            ExibirTituloDaOpcao("Dados Da Conta Bancária");
+
+            if (numeroConta == 0)
+            {
+                Console.Write("\nEntre com o numero da Conta Corrente: ");
+                numeroConta = int.Parse(Console.ReadLine()!);
+            }
+
+            ContaBancaria cb;
+
+            if (contas.Count() > 0 && contas.ContainsKey(numeroConta))
+            {
+                cb = contas[numeroConta];
+
+                Console.WriteLine($"\nConta Commente: {numeroConta}");
+                Console.WriteLine($"Titular da conta: {cb.Titular.Nome}");
+                Console.WriteLine($"CPF: {cb.Titular.Cpf}");
+                cb.Titular.GerarEndereço();
+
+            }
+            else
+            {
+                Console.WriteLine("Conta Coorente não encontrada !");
+            }
+
+
+
+
+
+
         }
 
 

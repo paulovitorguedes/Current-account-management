@@ -7,9 +7,9 @@ internal class Endereco
     public string Cidade { get; set; } = string.Empty;
 
 
-    string GerarEndereço()
+    internal virtual void GerarEndereço()
     {
-        return $"Rua: {Rua} - Bairro: {Bairro} - {Cidade}";
+        Console.WriteLine($"Rua: {Rua} - Bairro: {Bairro} - {Cidade}");
     }
 }
 

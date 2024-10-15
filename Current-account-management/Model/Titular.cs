@@ -10,5 +10,11 @@
 
         public string Nome { get; }
         public string Cpf { get; }
+
+        internal override void GerarEndereço()
+        {
+            Console.Write("Endereço: ");
+            base.GerarEndereço();
+        }
     }
 }
