@@ -8,11 +8,13 @@
         {
             NumeroConta = numeroConta;
             Titular = titular;
+            Saldo = 0;
+            Ativa = true;
         }
 
         public int NumeroConta { get; }
         public double Saldo { get; set;  }
-        public bool Especial { get; set; }
+        public bool Ativa { get; set; }
         public Titular Titular { get; }
         public Movimentacao Movimentacao { get; }
 
