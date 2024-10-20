@@ -39,6 +39,10 @@ internal class Program
                     Console.Clear();
                     VerificarSaldo();
                     break;
+                case "6":
+                    Console.Clear();
+                    Depositar();
+                    break;
                 default:
                     break;
             }
@@ -172,7 +176,40 @@ internal class Program
                     Console.WriteLine($"SALDO: R${contas[conta].Saldo}");
                 }
                 else Console.WriteLine("Documento Inválido");
-            } else Console.WriteLine("Conta Corrente não encontrada");
+            }
+            else Console.WriteLine("Conta Corrente não encontrada");
+
+            Sair();
+        }
+
+
+
+
+        void Depositar()
+        {
+            ExibirTituloDaOpcao("Depositar");
+
+            Console.Write("\nEntre com o número da conta: ");
+            int conta = int.Parse(Console.ReadLine()!);
+
+            Console.Write("Entre com o número do CPF: ");
+            string doc = Console.ReadLine()!;
+
+
+            if (contas.ContainsKey(conta))
+            {
+                if (contas[conta].Titular.Cpf.Equals(doc))
+                {
+                    Console.Write("\nEntre com o Valor do depósito: ");
+                    double valor = double.Parse(Console.ReadLine()!);
+                    contas[conta].Saldo +
+                        = valor;
+                    Console.WriteLine($"\nA importância de R${valor} foi depositada com sucesso");
+                    Console.WriteLine($"SALDO: R${contas[conta].Saldo}");
+                }
+                else Console.WriteLine("Documento Inválido");
+            }
+            else Console.WriteLine("Conta Corrente não encontrada");
 
             Sair();
         }
