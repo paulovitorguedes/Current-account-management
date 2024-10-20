@@ -9,6 +9,9 @@ internal class Program
     private static void Main(string[] args)
     {
         Dictionary<int, ContaBancaria> contas = new();
+        string data = "20/10/2024";
+
+
         ExibirOpcoesDoMenu();
 
         void ExibirOpcoesDoMenu()
@@ -113,18 +116,11 @@ internal class Program
                 }
 
             } while (valid);
-
-
-            //if (Data.DataEhValida("31/02/2005"))
-            //    Console.WriteLine("Data válida");
-
-            //else
-            //    Console.WriteLine("Data inválida");
         }
 
 
 
-        //Classe para informar osdados cadastrais das contas informadas
+        //Opção 1 - Classe para informar os dados cadastrais das contas informadas
         void VerificarDadosDaConta(int numeroConta = 0)
         {
             ExibirTituloDaOpcao("Dados Da Conta Bancária");
@@ -157,7 +153,7 @@ internal class Program
 
 
 
-        //Classe para impressçao de Saldo
+        //Opção 2 - Classe para impressao do Saldo
         void VerificarSaldo()
         {
             ExibirTituloDaOpcao("SALDO");
@@ -184,7 +180,7 @@ internal class Program
 
 
 
-
+        //Opção 6 - Classe para realizar depósitos 
         void Depositar()
         {
             ExibirTituloDaOpcao("Depositar");
@@ -195,17 +191,23 @@ internal class Program
             Console.Write("Entre com o número do CPF: ");
             string doc = Console.ReadLine()!;
 
+            double valor = 0;
 
             if (contas.ContainsKey(conta))
             {
                 if (contas[conta].Titular.Cpf.Equals(doc))
                 {
                     Console.Write("\nEntre com o Valor do depósito: ");
-                    double valor = double.Parse(Console.ReadLine()!);
-                    contas[conta].Saldo +
-                        = valor;
+                    valor = double.Parse(Console.ReadLine()!);
+                    contas[conta].Saldo += valor;
                     Console.WriteLine($"\nA importância de R${valor} foi depositada com sucesso");
                     Console.WriteLine($"SALDO: R${contas[conta].Saldo}");
+
+                    if (Data.DataEhValida(data))
+                    {
+                        Movimentacao movimentacao = new(data, valor, Movimentacao.TipoMovimentacao.Credito);
+                        contas[conta].RegistrarMovimentacao(movimentacao);
+                    }
                 }
                 else Console.WriteLine("Documento Inválido");
             }
@@ -213,6 +215,7 @@ internal class Program
 
             Sair();
         }
+
 
 
         void ExibirTituloDaOpcao(string titulo)
