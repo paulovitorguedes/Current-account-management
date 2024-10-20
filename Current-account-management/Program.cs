@@ -1,4 +1,5 @@
 ﻿using ContaCorrente.Model;
+using System.Globalization;
 using static System.Net.Mime.MediaTypeNames;
 
 internal class Program
@@ -34,11 +35,19 @@ internal class Program
                     Console.Clear();
                     VerificarDadosDaConta();
                     break;
+                case "3":
+                    Console.Clear();
+                    VerificarSaldo();
+                    break;
                 default:
                     break;
             }
         }
 
+
+
+
+        //Classe para cadastro de novas contas
         void RegistrarConta()
         {
             ExibirTituloDaOpcao("Cadastro de Conta Bancária");
@@ -90,8 +99,7 @@ internal class Program
                         valid = false;
                         break;
                     case "2":
-                        Console.Clear();
-                        ExibirOpcoesDoMenu();
+                        Sair();
                         valid = false;
                         break;
                     default:
@@ -102,10 +110,6 @@ internal class Program
 
             } while (valid);
 
-            Console.Write("Digite qualquer tecla para sair . . .");
-            Console.ReadLine();
-            Console.Clear();
-            ExibirOpcoesDoMenu();
 
             //if (Data.DataEhValida("31/02/2005"))
             //    Console.WriteLine("Data válida");
@@ -115,6 +119,8 @@ internal class Program
         }
 
 
+
+        //Classe para informar osdados cadastrais das contas informadas
         void VerificarDadosDaConta(int numeroConta = 0)
         {
             ExibirTituloDaOpcao("Dados Da Conta Bancária");
@@ -142,11 +148,33 @@ internal class Program
                 Console.WriteLine("Conta Coorente não encontrada !");
             }
 
+            Sair();
+        }
 
 
 
+        //Classe para impressçao de Saldo
+        void VerificarSaldo()
+        {
+            ExibirTituloDaOpcao("SALDO");
+
+            Console.Write("\nEntre com o número da conta: ");
+            int conta = int.Parse(Console.ReadLine()!);
+
+            Console.Write("Entre com o número do CPF: ");
+            string doc = Console.ReadLine()!;
 
 
+            if (contas.ContainsKey(conta))
+            {
+                if (contas[conta].Titular.Cpf.Equals(doc))
+                {
+                    Console.WriteLine($"SALDO: R${contas[conta].Saldo}");
+                }
+                else Console.WriteLine("Documento Inválido");
+            } else Console.WriteLine("Conta Corrente não encontrada");
+
+            Sair();
         }
 
 
@@ -157,6 +185,15 @@ internal class Program
             Console.WriteLine(asteriscos);
             Console.WriteLine(titulo);
             Console.WriteLine(asteriscos + "\n");
+        }
+
+
+        void Sair()
+        {
+            Console.Write("\n\nDigite qualquer tecla para sair . . .");
+            Console.ReadLine();
+            Console.Clear();
+            ExibirOpcoesDoMenu();
         }
 
     }

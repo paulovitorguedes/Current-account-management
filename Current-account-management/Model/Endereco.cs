@@ -9,7 +9,7 @@ internal class Endereco
 
     internal virtual void GerarEndereço()
     {
-        Console.WriteLine($"Rua: {Rua} - Bairro: {Bairro} - {Cidade}");
+        Console.WriteLine($"{Rua} - {Bairro} - {Cidade}");
     }
 }
 
