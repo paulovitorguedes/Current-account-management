@@ -1,8 +1,5 @@
 ﻿using ContaCorrente.Model;
 using System.Drawing;
-using System.Globalization;
-using System.Security.Cryptography.X509Certificates;
-using static System.Net.Mime.MediaTypeNames;
 
 internal class Program
 {
@@ -56,7 +53,12 @@ internal class Program
                     Console.Clear();
                     Depositar();
                     break;
+                case "7":
+                    Console.Clear();
+                    RealizarPix();
+                    break;
                 default:
+                    Console.WriteLine("Até mais!!");
                     break;
             }
         }
@@ -311,6 +313,64 @@ internal class Program
 
 
 
+        //Opção 7 - Classe para realizar transferencias
+        void RealizarPix()
+        {
+            ExibirTituloDaOpcao("PIX");
+
+            Console.Write("\nEntre com o número da conta: ");
+            int conta = int.Parse(Console.ReadLine()!);
+
+            Console.Write("Entre com o número do CPF: ");
+            string doc = Console.ReadLine()!;
+
+
+            if (contas.ContainsKey(conta))
+            {
+                if (contas[conta].Titular.Cpf.Equals(doc))
+                {
+
+                    Console.Write("\nEntre com a Conta para transferência: ");
+                    int contaDestino = int.Parse(Console.ReadLine()!);
+
+                    if (contas.ContainsKey(contaDestino))
+                    {
+                        Console.Write("\nEntre com o Valor para transferência: ");
+                        double valorDestino = double.Parse(Console.ReadLine()!);
+
+                        if (contas[conta].Saldo > valorDestino)
+                        {
+                            contas[conta].Saldo -= valorDestino;
+                            Console.WriteLine($"\nA importância de R${valorDestino} foi Transferida com sucesso");
+
+                            if (Data.DataEhValida(data))
+                            {
+                                Movimentacao movimentacao = new(data, valorDestino, Movimentacao.TipoMovimentacao.Transferencia);
+                                contas[conta].RegistrarMovimentacao(movimentacao);
+                            }
+
+                            contas[contaDestino].Saldo += valorDestino;
+
+                            if (Data.DataEhValida(data))
+                            {
+                                Movimentacao movimentacao = new(data, valorDestino, Movimentacao.TipoMovimentacao.Credito);
+                                contas[contaDestino].RegistrarMovimentacao(movimentacao);
+                            }
+                        }
+                        else Console.WriteLine("A conta não possui saldo suficiente para Transferência do valor solicitado");
+
+
+                    }
+                    else Console.WriteLine("Conta Corrente para a transferência não foi encontrada!");
+
+
+                }
+                else Console.WriteLine("Documento Inválido");
+            }
+            else Console.WriteLine("Conta Corrente não encontrada");
+
+            Sair();
+        }
 
 
 
