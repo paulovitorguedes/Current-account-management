@@ -48,6 +48,10 @@ internal class Program
                     Console.Clear();
                     VerificarExtrato();
                     break;
+                case "5":
+                    Console.Clear();
+                    RealizarSaque();
+                    break;
                 case "6":
                     Console.Clear();
                     Depositar();
@@ -221,6 +225,50 @@ internal class Program
 
             Sair();
 
+        }
+
+
+
+        ////Opção 5 - Classe para realizar saques
+        void RealizarSaque()
+        {
+            ExibirTituloDaOpcao("Saque");
+
+            Console.Write("\nEntre com o número da conta: ");
+            int conta = int.Parse(Console.ReadLine()!);
+
+            Console.Write("Entre com o número do CPF: ");
+            string doc = Console.ReadLine()!;
+
+            double valor = 0;
+
+            if (contas.ContainsKey(conta))
+            {
+                if (contas[conta].Titular.Cpf.Equals(doc))
+                {
+                    Console.Write("\nEntre com o Valor para o saque: ");
+                    valor = double.Parse(Console.ReadLine()!);
+
+                    if (contas[conta].Saldo > valor)
+                    {
+                        contas[conta].Saldo -= valor;
+                        Console.WriteLine($"\nA importância de R${valor} foi retirada com sucesso");
+                        Console.WriteLine($"SALDO: R${contas[conta].Saldo}");
+                        
+                        if (Data.DataEhValida(data))
+                        {
+                            Movimentacao movimentacao = new(data, valor, Movimentacao.TipoMovimentacao.Saque);
+                            contas[conta].RegistrarMovimentacao(movimentacao);
+                        }
+                    }
+                    else Console.WriteLine("A conta não possui saldo suficiente para retirada do valor solicitado");
+
+                }
+                else Console.WriteLine("Documento Inválido");
+            }
+            else Console.WriteLine("Conta Corrente não encontrada");
+
+            Sair();
         }
 
 
