@@ -1,5 +1,7 @@
 ﻿using ContaCorrente.Model;
+using System.Drawing;
 using System.Globalization;
+using System.Security.Cryptography.X509Certificates;
 using static System.Net.Mime.MediaTypeNames;
 
 internal class Program
@@ -42,6 +44,10 @@ internal class Program
                     Console.Clear();
                     VerificarSaldo();
                     break;
+                case "4":
+                    Console.Clear();
+                    VerificarExtrato();
+                    break;
                 case "6":
                     Console.Clear();
                     Depositar();
@@ -54,7 +60,7 @@ internal class Program
 
 
 
-        //Classe para cadastro de novas contas
+        //Opção 1 - Classe para cadastro de novas contas
         void RegistrarConta()
         {
             ExibirTituloDaOpcao("Cadastro de Conta Bancária");
@@ -120,7 +126,7 @@ internal class Program
 
 
 
-        //Opção 1 - Classe para informar os dados cadastrais das contas informadas
+        //Opção 2 - Classe para informar os dados cadastrais das contas informadas
         void VerificarDadosDaConta(int numeroConta = 0)
         {
             ExibirTituloDaOpcao("Dados Da Conta Bancária");
@@ -153,7 +159,7 @@ internal class Program
 
 
 
-        //Opção 2 - Classe para impressao do Saldo
+        //Opção 3 - Classe para impressao do Saldo
         void VerificarSaldo()
         {
             ExibirTituloDaOpcao("SALDO");
@@ -176,6 +182,45 @@ internal class Program
             else Console.WriteLine("Conta Corrente não encontrada");
 
             Sair();
+        }
+
+
+
+        //Opção 4 - Classe para impressao do Extrato
+        void VerificarExtrato()
+        {
+            ExibirTituloDaOpcao("Extrato");
+
+            Console.Write("\nEntre com o número da conta: ");
+            int conta = int.Parse(Console.ReadLine()!);
+
+            Console.Write("Entre com o número do CPF: ");
+            string doc = Console.ReadLine()!;
+
+            if (contas.ContainsKey(conta))
+            {
+                if (contas[conta].Titular.Cpf.Equals(doc))
+                {
+
+                    List<Movimentacao> extrato = contas[conta].Movimentacoes;
+                    if (extrato.Count > 0)
+                    {
+                        Console.WriteLine("\n\n");
+                        foreach (Movimentacao mov in extrato)
+                        {
+                            Console.WriteLine($"Data: {mov.Data} | {mov.Mov} | R${mov.Valor}");
+                        }
+                    }
+                    else Console.WriteLine("A conta corrente selecionada não possui movimentações!");
+
+                    Console.WriteLine($"Saldo: {contas[conta].Saldo}");
+                }
+                else Console.WriteLine("Documento Inválido");
+            }
+            else Console.WriteLine("Conta Corrente não encontrada");
+
+            Sair();
+
         }
 
 
@@ -215,6 +260,9 @@ internal class Program
 
             Sair();
         }
+
+
+
 
 
 

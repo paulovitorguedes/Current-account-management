@@ -16,7 +16,7 @@
         public double Saldo { get; set;  }
         public bool Ativa { get; set; }
         public Titular Titular { get; }
-        public Movimentacao Movimentacao { get; }
+        public List<Movimentacao> Movimentacoes => movimentacoes;
 
 
         public virtual void RegistrarMovimentacao( Movimentacao movimentacao)
